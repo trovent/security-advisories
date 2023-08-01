@@ -1,0 +1,90 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+# Trovent Security Advisory 2203-01 #
+#####################################
+
+
+Micro Focus GroupWise transmits session ID in URL
+#################################################
+
+
+Overview
+########
+
+Advisory ID: TRSA-2203-01
+Advisory version: 1.0
+Advisory status: Public
+Advisory URL: https://trovent.io/security-advisory-2203-01
+Affected product: Micro Focus GroupWise
+Affected version: prior to 18.4.2
+Vendor: Micro Focus, https://www.microfocus.com
+Credits: Trovent Security GmbH, Stefan Pietsch
+
+
+Detailed description
+####################
+
+Micro Focus GroupWise is a messaging software for email and personal information
+management.
+Trovent Security GmbH discovered that the GroupWise web application transmits
+the session ID in HTTP GET requests in the URL when email content is accessed.
+The exposed session ID can be recorded in the browser history of the client and
+in log files of the web server or reverse proxy server.
+A possible attacker with access to the browser history or the server log files
+is able to take control of the user session with the help of the session ID.
+
+Severity: Medium
+CVSS Score: 4.3 (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:L/I:N/A:N)
+CVE ID: CVE-2022-38756
+CWE ID: CWE-598
+
+
+Proof of concept
+################
+
+Simplified HTTP request:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+GET /attachment?session=<SESSIONID>&id=... HTTP/1.1
+Host: <HOSTNAME>
+...
+X-User-Agent: GroupWise Web (18.4.0-139604)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+Solution / Workaround
+#####################
+
+The vendor released a fixed version of GroupWise.
+
+Fixed in version 18.4.2.
+
+
+History
+#######
+
+2022-03-30: Vulnerability found
+2022-08-05: Vendor contacted
+2022-10-31: Contacted vendor again
+2022-11-01: Vendor replied that the vulnerability will be investigated
+2022-11-14: Vendor contacted, asking for status
+2022-11-16: Vendor replied that a security bulletin is being prepared
+2022-12-06: Vendor published security bulletin
+2023-01-27: Advisory published
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEE0wArIZvu5AKY9ZSXzx6v/h6FjrcFAmPT3wgACgkQzx6v/h6F
+jreWhw//fEdLxTjqgWVf3nNvv0IehP39Mw7U2MIxq4bFFWASG/22aDmJlYO3VQWD
+tUQf8BVbhDHrFE1RqIa7IBulPvDP4AkaSxHd3dB+5jEmoo8iSXk0O+MYT2oRXEEY
+zFpf9QCnvkCnSMDSofppa15KEwoa9S83MSwIN6CzUdE+BFLTLRNE7UnT93Jn00da
+/gieeh87GVIsvbgR6bgY94hI0lWOYMtQ+tQrQrCOmPFPaKKtoWEFDREq3TS5fBFW
+iXKwbhskwE9IfWdE2AJQbOiFEyb0OWLrrZfr93BtAPxJd8PdRwDaXKDCq9HWJMKg
+7pUHT9SOX2PqAwXPfSJ1YFqWvu3+0uJfcZSxgVRIh9JH/A/trGR+Na1lh0hj8L47
+omPr7dTceV+FlEo74UdMQAKfJP2Bg53izf7T6JmMrb2rzl4JGyoW/EtZ+otaWyGh
+dmkvNjuguNhvhCuw9C/t0EPK5APyOTgUqBEzJCW2VYBHQM98iITOkLsMkInc0o84
+E9TdkwErhLlDq70h0mPW7C0KLajUYzUoYqZd8f+HsoCl+RWSbheyKXenEXHBiPVp
+Da/4D0NaoHfjZU6OMyu9cBKJxkQp+NQc0L7n9Xh4MuDpoviaVx2nJybPxSZQ5VpX
+LEqrA/NmhBoxhIK7H6g4ThSdlZCjj5TuCdt41upqwtdir+x0ZPc=
+=BsNX
+-----END PGP SIGNATURE-----
